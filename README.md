@@ -1,49 +1,83 @@
 # Ad Engagement Analysis
 
-## Overview
-An end-to-end data analysis project measuring the effectiveness of 
-257 Instagram ad campaigns through 7,488 user interactions. 
-This project identifies top-performing campaigns, user engagement 
-patterns, and sentiment towards sponsored content.
+An end-to-end analytics project that scores Instagram ad interactions and ranks campaigns using a custom business metric.
 
-## Business Problem
-Brands invest heavily in Instagram ad campaigns but struggle to 
-measure which campaigns actually drive engagement and which fall flat.
-This project builds an analytical framework to answer that question
-using real interaction data.
+## Objective
+Brands need to know which campaigns drive high-quality engagement, not just raw comment volume.
 
-## Key Questions
-- Which ad campaigns generated the highest user engagement?
-- Are users emotionally responding to ads? (emoji as engagement signal)
-- Are users amplifying ads further? (hashtag count as sharing intent)
-- What is the sentiment towards sponsored posts — positive or negative?
-- Who are the power engagers — potential brand advocates?
-- What makes a high-performing ad campaign vs a low-performing one?
+This project builds an engagement scoring framework and dashboard to identify:
+- top and bottom campaigns,
+- interaction quality patterns,
+- data quality confidence before reporting.
 
-## Tech Stack
-![Python](https://img.shields.io/badge/Python-3.x-blue)
-![Pandas](https://img.shields.io/badge/Pandas-Analysis-green)
-![NLP](https://img.shields.io/badge/NLP-VADER%20%7C%20TextBlob-purple)
-![Plotly](https://img.shields.io/badge/Plotly-Visualization-orange)
-![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red)
+## Dataset Snapshot
+- 7,488 interaction records
+- 257 campaigns
+- 77 users
+- Source context: Instagram comments and behavior signals
 
-## Project Structure
-data/                  → Raw campaign interaction dataset  
-notebooks/             → Step-by-step analysis notebooks  
-  01_eda.ipynb         → Campaign & user exploration  
-  02_sentiment.ipynb   → Sentiment analysis of ad comments  
-  03_engagement.ipynb  → Engagement scoring & campaign ranking  
-assets/                → Charts and dashboard screenshots  
-reports/               → Final insights summary  
-app.py                 → Interactive Streamlit dashboard  
-requirements.txt       → All dependencies  
+## Engagement Scoring Logic
+Each interaction receives a custom score:
 
-## Dataset
-7,488 user interactions · 257 ad campaigns · 77 unique users  
-Platform: Instagram · Period: April 2023
+$$
+Engagement\ Score = 1 + (2 \times EmojiUsedFlag) + HashtagCount
+$$
 
-## Key Findings
-*(Updated as analysis progresses)*
+Where:
+- Base comment contributes 1 point
+- Emoji used contributes 2 points (if yes)
+- Hashtag count contributes 1 point per hashtag
 
-## Live Dashboard
-*(Streamlit deployment link — added Day 5)*
+## Repository Structure
+- data/ -> cleaned and engineered CSV files
+- notebooks/ -> analysis workflow notebooks
+- notebooks/01_eda.ipynb -> exploratory analysis
+- notebooks/02_sentiment.ipynb -> sentiment workflow
+- notebooks/03_engagement.ipynb -> feature engineering, ranking, validation
+- app.py -> Streamlit dashboard
+- requirements.txt -> Python dependencies
+- reports/ -> final narrative outputs
+
+## How To Run
+1. Create and activate a virtual environment.
+2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Run notebooks in order:
+- notebooks/01_eda.ipynb
+- notebooks/02_sentiment.ipynb
+- notebooks/03_engagement.ipynb
+
+4. Launch dashboard:
+
+```bash
+streamlit run app.py
+```
+
+## Generated Outputs
+Running notebook 03 creates:
+- data/ad_interactions_scored.csv
+- data/campaign_performance.csv
+
+## Validation Included
+Notebook 03 includes validation checks for:
+- required column presence,
+- emoji value integrity (yes/no),
+- engagement score min and max,
+- exported row-count consistency.
+
+## Current Findings
+- Campaign performance spread is meaningful (score spread: 80).
+- Top campaigns achieve stronger total engagement with consistent average interaction quality.
+- Data quality checks pass for current engineered outputs.
+
+## Dashboard Features
+- KPI cards (interaction count, average score, best campaign, campaign count)
+- campaign and date filters
+- ranked campaign table
+- engagement distribution chart
+- top-campaign comparison chart
+- quality status block for fast trust checks
