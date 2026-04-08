@@ -92,3 +92,15 @@ Notebook 03 includes validation checks for:
 - engagement distribution chart
 - top-campaign comparison chart
 - quality status block for fast trust checks
+
+## Submission Checklist
+- Run notebooks in order and confirm all CSV outputs are regenerated.
+- Launch dashboard and verify all sections render correctly.
+- Ensure final report exists at reports/final_report.md.
+- Capture and save screenshots in assets/ with these recommended names:
+	- assets/dashboard_kpi_overview.png
+	- assets/dashboard_top_campaigns.png
+	- assets/dashboard_priority_table.png
+	- assets/notebook_validation_output.png
+	- assets/notebook_sentiment_engagement_plot.png
+- Add screenshot references in this README before final submission.
