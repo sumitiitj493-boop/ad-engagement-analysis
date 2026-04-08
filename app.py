@@ -146,6 +146,49 @@ st.dataframe(
     hide_index=True,
 )
 
+st.subheader("Final Decision View (Sentiment + Engagement)")
+final_path = "data/campaign_sentiment_engagement_final.csv"
+if os.path.exists(final_path):
+    final_df = pd.read_csv(final_path)
+    top_priority = final_df.sort_values("priority_index", ascending=True).head(10)
+    bottom_priority = final_df.sort_values("priority_index", ascending=False).head(10)
+
+    pcol1, pcol2 = st.columns(2)
+    pcol1.markdown("Top 10 Priority Campaigns")
+    pcol1.dataframe(
+        top_priority[
+            [
+                "campaign_id",
+                "total_engagement_score",
+                "avg_engagement_score",
+                "avg_vader_compound",
+                "priority_index",
+            ]
+        ],
+        use_container_width=True,
+        hide_index=True,
+    )
+
+    pcol2.markdown("Bottom 10 Campaigns To Optimize")
+    pcol2.dataframe(
+        bottom_priority[
+            [
+                "campaign_id",
+                "total_engagement_score",
+                "avg_engagement_score",
+                "avg_vader_compound",
+                "priority_index",
+            ]
+        ],
+        use_container_width=True,
+        hide_index=True,
+    )
+else:
+    st.info(
+        "Final sentiment-engagement priority file is not found yet. "
+        "Run Notebook 03 final section to generate data/campaign_sentiment_engagement_final.csv."
+    )
+
 st.subheader("Export Check")
 if os.path.exists("data/ad_interactions_scored.csv") and os.path.exists("data/campaign_performance.csv"):
     st.info(

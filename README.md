@@ -61,6 +61,7 @@ streamlit run app.py
 Running notebook 03 creates:
 - data/ad_interactions_scored.csv
 - data/campaign_performance.csv
+- data/campaign_sentiment_engagement_final.csv
 
 ## Validation Included
 Notebook 03 includes validation checks for:
@@ -73,6 +74,16 @@ Notebook 03 includes validation checks for:
 - Campaign performance spread is meaningful (score spread: 80).
 - Top campaigns achieve stronger total engagement with consistent average interaction quality.
 - Data quality checks pass for current engineered outputs.
+- Interaction-level sentiment and engagement correlation is near zero in this dataset.
+- Campaign-level sentiment-engagement correlation is weakly negative (about -0.16).
+
+## Completion Status
+- Core analytics pipeline: complete
+- Validation and quality checks: complete
+- Engagement and ranking insights: complete
+- Sentiment-engagement merge analysis: complete
+- Streamlit dashboard: complete
+- Final report: available in reports/final_report.md
 
 ## Dashboard Features
 - KPI cards (interaction count, average score, best campaign, campaign count)
