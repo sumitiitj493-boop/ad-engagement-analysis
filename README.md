@@ -35,8 +35,13 @@ Where:
 - notebooks/02_sentiment.ipynb -> sentiment workflow
 - notebooks/03_engagement.ipynb -> feature engineering, ranking, validation
 - app.py -> Streamlit dashboard
+- train_predictive_model.py -> Machine Learning pipeline script
 - requirements.txt -> Python dependencies
 - reports/ -> final narrative outputs
+
+## Interpreting ML Results
+- **⚠️ Perfect Accuracy Note**: The current model predicts engagement with perfect precision (Accuracy/F1: 1.000). This is expected due to **target leakage**, as the target (`engagement_score`) was mathematically engineered directly from the features (`emoji_used`, `hashtag_count`).
+- **Validation, Not Prediction**: This baseline validates that our feature engineering pipeline and classification architecture work. For true real-world predictive power, future models should be trained on external objectives like Click-Through Rate (CTR) or Sales Conversions.
 
 ## How To Run
 1. Create and activate a virtual environment.
@@ -57,11 +62,34 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
+5. Run predictive ML extension (classification baseline):
+
+```bash
+python train_predictive_model.py
+```
+
 ## Generated Outputs
 Running notebook 03 creates:
 - data/ad_interactions_scored.csv
 - data/campaign_performance.csv
 - data/campaign_sentiment_engagement_final.csv
+
+Running predictive ML extension creates:
+- reports/ml_model_report.md
+- reports/ml_confusion_matrix.png
+- data/predicted_engagement_sample.csv
+
+## Predictive ML Extension
+To convert this into a stronger Machine Learning submission, this repository includes a binary classification task:
+- Target: High_Engagement = 1 if engagement_score is above the median, else 0
+- Features: emoji flag, hashtag count, comment length, sentiment polarity, TF-IDF text features
+- Models: Logistic Regression and Random Forest
+- Metrics: Accuracy, F1 Score, confusion matrix, classification report
+
+Important evaluation note:
+- The current target is derived from an engineered score that already uses emoji and hashtags, so perfect metrics can occur.
+- This is expected for a baseline and demonstrates pipeline correctness.
+- Next phase should use an external business target (for example CTR or conversion) to avoid target leakage and evaluate true predictive power.
 
 ## Validation Included
 Notebook 03 includes validation checks for:
