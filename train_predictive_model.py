@@ -53,7 +53,8 @@ def train_and_evaluate(df: pd.DataFrame) -> dict:
     df = build_features(df)
     y, median_score = make_target(df)
 
-    feature_cols = ["emoji_flag", "hashtag_count", "comment_length", "sentiment_polarity", "comment"]
+    # Removed emoji_flag and hashtag_count to avoid target leakage!
+    feature_cols = ["comment_length", "sentiment_polarity", "comment"]
     X = df[feature_cols]
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -64,7 +65,7 @@ def train_and_evaluate(df: pd.DataFrame) -> dict:
         stratify=y,
     )
 
-    numeric_features = ["emoji_flag", "hashtag_count", "comment_length", "sentiment_polarity"]
+    numeric_features = ["comment_length", "sentiment_polarity"]
     text_feature = "comment"
 
     preprocessor = ColumnTransformer(
@@ -190,8 +191,6 @@ def write_report(summary: dict) -> None:
     lines.append(f"- Test rows: {summary['test_rows']}")
     lines.append("")
     lines.append("## Features Used")
-    lines.append("- emoji_flag")
-    lines.append("- hashtag_count")
     lines.append("- comment_length")
     lines.append("- sentiment_polarity")
     lines.append("- comment text (TF-IDF)")
@@ -210,16 +209,15 @@ def write_report(summary: dict) -> None:
 
     lines.append(f"## Best Model\n{summary['best_name']}")
     lines.append(
-        "**⚠️ Perfect accuracy due to feature-target dependency (target leakage)**. "
-        "The target label is derived from an engineered engagement score that already includes emoji and hashtag signals."
+        "**Real-world Predictive Model**. "
+        "The cheat features (emoji_flag and hashtag_count) have been removed to avoid target leakage."
     )
     lines.append(
-        "Because these signals are also used as model features, very high metrics are expected for this baseline setup. "
-        "This validates our pipeline correctness but not real-world predictive power."
+        "This gives a realistic evaluation of predicting engagement using only naturally provided text and sentiment."
     )
     lines.append("")
     lines.append("## Feature Insight")
-    lines.append("Behavioral features (emojis, hashtag counts) dominate engagement prediction, while text/sentiment features contribute minimally in this dataset.")
+    lines.append("By relying solely on text features and sentiment, we simulate a cold-start prediction environment.")
     lines.append(
         "For stronger ML validity, use an external outcome target such as CTR, conversion, or retention in a future phase."
     )

@@ -40,8 +40,8 @@ Where:
 - reports/ -> final narrative outputs
 
 ## Interpreting ML Results
-- **⚠️ Perfect Accuracy Note**: The current model predicts engagement with perfect precision (Accuracy/F1: 1.000). This is expected due to **target leakage**, as the target (`engagement_score`) was mathematically engineered directly from the features (`emoji_used`, `hashtag_count`).
-- **Validation, Not Prediction**: This baseline validates that our feature engineering pipeline and classification architecture work. For true real-world predictive power, future models should be trained on external objectives like Click-Through Rate (CTR) or Sales Conversions.
+- **Predictive Power**: Our model predicts engagement using natural text features alone (comment length, sentiment polarity, and TF-IDF vectors).
+- **Target Leakage Remediation**: Previously, the model used `emoji_used` and `hashtag_count` which allowed perfect predictions because they formulated the target variable. Now, it operates as a cold-start NLP problem to evaluate true text-based predictive capabilities.
 
 ## How To Run
 1. Create and activate a virtual environment.
@@ -82,14 +82,9 @@ Running predictive ML extension creates:
 ## Predictive ML Extension
 To convert this into a stronger Machine Learning submission, this repository includes a binary classification task:
 - Target: High_Engagement = 1 if engagement_score is above the median, else 0
-- Features: emoji flag, hashtag count, comment length, sentiment polarity, TF-IDF text features
+- Features: comment length, sentiment polarity, TF-IDF text features (Target leakage from emoji/hashtag flags has been removed).
 - Models: Logistic Regression and Random Forest
 - Metrics: Accuracy, F1 Score, confusion matrix, classification report
-
-Important evaluation note:
-- The current target is derived from an engineered score that already uses emoji and hashtags, so perfect metrics can occur.
-- This is expected for a baseline and demonstrates pipeline correctness.
-- Next phase should use an external business target (for example CTR or conversion) to avoid target leakage and evaluate true predictive power.
 
 ## Validation Included
 Notebook 03 includes validation checks for:

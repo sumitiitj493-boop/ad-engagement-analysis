@@ -66,15 +66,10 @@ st.caption("Interactive view of campaign performance using a custom engagement s
 
 # --- Added ML Prediction Section ---
 st.subheader("Predict Engagement")
-st.info("Engagement Score Heuristic = 1 (base) + 2 × emoji_used + hashtag_count")
-st.caption("Higher hashtag usage directly impacts the final engagement class.")
+st.info("Can we predict High Engagement using only Text and Sentiment? (No cheating with Emoji/Hashtag counts!)")
 
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 with col1:
-    in_emoji = st.selectbox("Used Emoji?", ["no", "yes"])
-with col2:
-    in_hash = st.slider("Hashtag Count", 0, 6, 0)
-with col3:
     in_text = st.text_input("Comment Text", "Great post!")
 
 if st.button("Predict Target"):
@@ -84,12 +79,11 @@ if st.button("Predict Target"):
         # Prepare input dict exactly like build_features
         from textblob import TextBlob
         input_df = pd.DataFrame([{
-            "emoji_flag": 1 if in_emoji == "yes" else 0,
-            "hashtag_count": in_hash,
             "comment_length": len(in_text),
             "sentiment_polarity": TextBlob(in_text).sentiment.polarity,
             "comment": in_text
         }])
+
         
         pred = model.predict(input_df)[0]
         if pred == 1:
